@@ -1,0 +1,5 @@
+{
+  "name": "BudgetApp: Expense Tracker",
+  "description": "A modern, intuitive web application for tracking personal expenses. It allows users to quickly add expenses, manage custom categories, view spending analytics through interactive charts, and export their data to CSV.",
+  "requestFramePermissions": []
+}

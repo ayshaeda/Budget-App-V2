@@ -1,7 +1,6 @@
 import React, { useState, useMemo } from 'react';
-import { Saving, Category } from '../types';
-import { PlusCircleIcon } from './icons';
-// FIX: Import `Label` from recharts.
+import { Saving, Category, View } from '../types';
+import { PlusCircleIcon, ListBulletIcon } from './icons';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, ReferenceLine, Label } from 'recharts';
 
 interface SavingGoalsProps {
@@ -10,6 +9,7 @@ interface SavingGoalsProps {
   addSaving: (saving: Omit<Saving, 'id'>) => void;
   goal: number;
   setGoal: (goal: number) => void;
+  setView: (view: View) => void;
 }
 
 const CustomTooltip = ({ active, payload, label }: any) => {
@@ -24,7 +24,7 @@ const CustomTooltip = ({ active, payload, label }: any) => {
   return null;
 };
 
-const SavingGoals: React.FC<SavingGoalsProps> = ({ savings, categories, addSaving, goal, setGoal }) => {
+const SavingGoals: React.FC<SavingGoalsProps> = ({ savings, categories, addSaving, goal, setGoal, setView }) => {
   const [amount, setAmount] = useState('');
   const [categoryId, setCategoryId] = useState(categories.length > 0 ? categories[0].id : '');
   const [details, setDetails] = useState('');
@@ -94,19 +94,19 @@ const SavingGoals: React.FC<SavingGoalsProps> = ({ savings, categories, addSavin
         <h2 className="text-4xl font-bold mb-4 text-teal-900">Saving Goals</h2>
         <div className="grid grid-cols-2 gap-4">
             <div className="text-center p-4 bg-teal-100 rounded-lg">
-                <h3 className="text-lg font-semibold text-teal-700">Total Saved</h3>
-                <p className="text-xl font-bold text-teal-900">${totalSaved.toFixed(0)}</p>
+                <h3 className="text-xl font-semibold text-teal-700">Saved</h3>
+                <p className="text-2xl font-bold text-teal-900">${totalSaved.toFixed(0)}</p>
             </div>
-            <div className="text-center p-4 bg-teal-100 rounded-lg">
-                <label htmlFor="goal" className="text-lg font-semibold text-teal-700">Goal</label>
+            <div className="text-center p-4 bg-teal-100 rounded-lg col-span-1">
+                <label htmlFor="goal" className="text-xl font-semibold text-teal-700">Goal</label>
                 <div className="mt-1 relative rounded-md shadow-sm">
-                    <span className="absolute inset-y-0 left-0 pl-3 flex items-center text-teal-600 text-lg font-bold">$</span>
+                    <span className="absolute inset-y-0 left-0 pl-3 flex items-center text-teal-600 text-xl font-bold">$</span>
                     <input
                       type="number"
                       id="goal"
                       value={goal}
                       onChange={(e) => setGoal(Number(e.target.value))}
-                      className="block w-full text-center bg-transparent border-0 border-b-2 border-teal-300 focus:border-teal-500 focus:ring-0 text-xl font-bold text-teal-900"
+                      className="block w-full text-center bg-transparent border-0 border-b-2 border-teal-300 focus:border-teal-500 focus:ring-0 text-2xl font-bold text-teal-900"
                       placeholder="1000"
                     />
                 </div>
@@ -128,7 +128,6 @@ const SavingGoals: React.FC<SavingGoalsProps> = ({ savings, categories, addSavin
                 <Bar key={cat.name} dataKey={cat.name} stackId="a" fill={cat.color} />
               ))}
               <ReferenceLine x={goal} stroke="red" strokeWidth={2} strokeDasharray="5 5">
-                 {/* FIX: Use `Label` component instead of `YAxis.Label`. */}
                  <Label value="Goal" offset={10} position="insideTopRight" fill="red" fontSize={16} />
               </ReferenceLine>
             </BarChart>
@@ -198,13 +197,23 @@ const SavingGoals: React.FC<SavingGoalsProps> = ({ savings, categories, addSavin
             {error && <p className="text-lg text-red-500">{error}</p>}
             {success && <p className="text-lg text-green-500">{success}</p>}
 
-            <button
-              type="submit"
-              className="w-full flex justify-center items-center gap-2 py-2 px-4 border border-transparent rounded-md shadow-sm text-lg font-medium text-white bg-teal-600 hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500 transition-colors"
-            >
-              <PlusCircleIcon />
-              Add Savings
-            </button>
+            <div className="flex flex-col gap-2">
+                <button
+                  type="submit"
+                  className="w-full flex justify-center items-center gap-2 py-2 px-4 border border-transparent rounded-md shadow-sm text-lg font-medium text-white bg-teal-600 hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500 transition-colors"
+                >
+                  <PlusCircleIcon />
+                  Add Savings
+                </button>
+                 <button
+                    type="button"
+                    onClick={() => setView('savingsHistory')}
+                    className="w-full flex justify-center items-center gap-2 py-2 px-4 border border-teal-600 text-teal-600 rounded-md shadow-sm text-lg font-medium hover:bg-teal-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500 transition-colors"
+                >
+                    <ListBulletIcon />
+                    View & Edit Savings
+                </button>
+            </div>
       </form>
       </div>
     </div>

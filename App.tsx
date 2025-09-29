@@ -7,6 +7,7 @@ import AnalyticsDashboard from './components/AnalyticsDashboard';
 import ExpenseHistory from './components/ExpenseHistory';
 import CategoryManager from './components/CategoryManager';
 import SavingGoals from './components/SavingGoals';
+import SavingsHistory from './components/SavingsHistory';
 
 const defaultCategories: Category[] = [
   { id: '1', name: 'Food', color: '#EC4899' },
@@ -33,13 +34,21 @@ const App: React.FC = () => {
     setExpenses(prev => [{ ...expense, id: Date.now().toString() }, ...prev]);
   }, [setExpenses]);
 
+  const deleteExpense = useCallback((id: string) => {
+    setExpenses(prev => prev.filter(expense => expense.id !== id));
+  }, [setExpenses]);
+
   const addSaving = useCallback((saving: Omit<Saving, 'id'>) => {
     setSavings(prev => [{ ...saving, id: Date.now().toString() }, ...prev]);
   }, [setSavings]);
 
-  const deleteExpense = useCallback((id: string) => {
-    setExpenses(prev => prev.filter(expense => expense.id !== id));
-  }, [setExpenses]);
+  const editSaving = useCallback((updatedSaving: Saving) => {
+    setSavings(prev => prev.map(s => s.id === updatedSaving.id ? updatedSaving : s));
+  }, [setSavings]);
+
+  const deleteSaving = useCallback((id: string) => {
+    setSavings(prev => prev.filter(saving => saving.id !== id));
+  }, [setSavings]);
 
   const addCategory = useCallback((category: Omit<Category, 'id'>) => {
     setCategories(prev => [...prev, { ...category, id: Date.now().toString() }]);
@@ -86,7 +95,16 @@ const App: React.FC = () => {
                   categories={categories}
                   goal={savingGoal}
                   setGoal={setSavingGoal}
+                  setView={setView}
                 />;
+      case 'savingsHistory':
+        return <SavingsHistory
+                  savings={savingsWithCategoryDetails}
+                  categories={categories}
+                  editSaving={editSaving}
+                  deleteSaving={deleteSaving}
+                  setView={setView}
+                />
       case 'home':
       default:
         return <ExpenseForm categories={categories} addExpense={addExpense} />;

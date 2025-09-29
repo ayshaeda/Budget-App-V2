@@ -20,4 +20,4 @@ export interface Category {
   color: string;
 }
 
-export type View = 'home' | 'analytics' | 'history' | 'categories' | 'savings';
+export type View = 'home' | 'analytics' | 'history' | 'categories' | 'savings' | 'savingsHistory';

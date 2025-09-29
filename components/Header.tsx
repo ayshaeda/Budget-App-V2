@@ -35,7 +35,7 @@ const Header: React.FC<HeaderProps> = ({ currentView, setView }) => {
             <h1 className="text-3xl sm:text-4xl font-bold text-indigo-600">BudgetApp</h1>
           </div>
           <div className="flex items-center gap-2 sm:gap-4">
-            <nav className="flex gap-1 sm:gap-2">
+            <nav className="flex gap-0.5 sm:gap-1.5">
               <NavButton label="Add Expense" icon={<HomeIcon />} isActive={currentView === 'home'} onClick={() => setView('home')} />
               <NavButton label="Analytics" icon={<ChartBarIcon />} isActive={currentView === 'analytics'} onClick={() => setView('analytics')} />
               <NavButton label="History" icon={<ListBulletIcon />} isActive={currentView === 'history'} onClick={() => setView('history')} />
